@@ -33,4 +33,23 @@ public class PairwiseVoting extends AbstractClassifier
 			}, 0);
 	
 	protected Classifier[] ensemble;
+	
+	@Override
+	public void resetLearningImpl()
+	{
+		
+	}
+	
+	@Override
+	public void trainOnInstanceImpl(Instance inst)
+	{
+		
+	}
+	
+	@Override
+	public double[] getVotesForInstance(Instance inst)
+	{
+		DoubleVector combinedVote = new DoubleVector();
+		return combinedVote.getArrayRef();
+	}
 }
