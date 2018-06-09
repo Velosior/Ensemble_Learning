@@ -1,17 +1,11 @@
-package moa.classifiers.meta;
-
+import com.github.javacliparser.IntOption;
+import com.github.javacliparser.MultiChoiceOption;
+import com.yahoo.labs.samoa.instances.Instance;
 import moa.classifiers.AbstractClassifier;
 import moa.classifiers.Classifier;
 import moa.core.DoubleVector;
 import moa.core.Measurement;
-import moa.core.ObjectRepository;
 import moa.options.ClassOption;
-import moa.options.IntOption;
-import moa.options.MultiChoiceOption;
-import moa.options.Option;
-import moa.tasks.TaskMonitor;
-import weka.core.Instance;
-import weka.core.Utils;
 
 public class PairwiseVoting extends AbstractClassifier
 {
@@ -20,7 +14,7 @@ public class PairwiseVoting extends AbstractClassifier
 	{
 		return "Pairwise voting algorithm for data streams.";
 	}
-	
+
 	public ClassOption baseLearnerOption = new ClassOption("baseLearner", 'l', "Classifier to train.", Classifier.class, "trees.HoeffdingTree");
 
 	public IntOption ensembleSizeOption = new IntOption("ensembleSize", 's', "The number of models to use in voting.", 10, 1, Integer.MAX_VALUE);
@@ -39,17 +33,32 @@ public class PairwiseVoting extends AbstractClassifier
 	{
 		
 	}
-	
+
 	@Override
 	public void trainOnInstanceImpl(Instance inst)
 	{
 		
 	}
-	
+
+	@Override
+	protected Measurement[] getModelMeasurementsImpl() {
+		return new Measurement[0];
+	}
+
+	@Override
+	public void getModelDescription(StringBuilder stringBuilder, int i) {
+
+	}
+
 	@Override
 	public double[] getVotesForInstance(Instance inst)
 	{
 		DoubleVector combinedVote = new DoubleVector();
 		return combinedVote.getArrayRef();
+	}
+
+	@Override
+	public boolean isRandomizable() {
+		return false;
 	}
 }
