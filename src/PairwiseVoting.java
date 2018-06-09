@@ -35,7 +35,6 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 
 	// Shared variables
 	protected Classifier[] ensemble;
-	int ensembleCounter;
 
 	// PA variables
 
@@ -49,7 +48,6 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 	{
 		// Initialize shared variables.
 		this.ensemble = new Classifier[2];
-		this.ensembleCounter = 0;
 
 		if (this.votingAlgorithmOption.getChosenIndex() == 0) {
 			// Initialize PA variables.
