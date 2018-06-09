@@ -28,3 +28,6 @@ Ensemble_Learning.iml
 
 # Library folder
 lib/
+
+# Output folder
+out/
