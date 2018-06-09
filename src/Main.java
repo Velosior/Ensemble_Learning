@@ -18,8 +18,8 @@ public class Main {
 
     private static void runExperiment(int numInstances, boolean isTesting) {
 
-        Classifier classifierLearner = new OzaBoost();
-        //Classifier classifierLearner = new PairwiseVoting();
+        //Classifier classifierLearner = new OzaBoost();
+        Classifier classifierLearner = new PairwiseVoting();
 
         RandomTreeGenerator randomTreeGeneratorStream = new RandomTreeGenerator();
         randomTreeGeneratorStream.prepareForUse();

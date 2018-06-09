@@ -19,8 +19,8 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 		return "Pairwise voting algorithm for data streams.";
 	}
 
-	public ClassOption activeClassifierOption = new ClassOption("activeClassifier", 'l', "Classifier to train.", Classifier.class, "trees.HoeffdingTree");
-	public ClassOption backgroundClassifierOption = new ClassOption("backgroundClassifier", 'l', "Classifier to train.", Classifier.class, "trees.HoeffdingTree");
+	public ClassOption activeClassifierOption = new ClassOption("activeClassifier", 'a', "Classifier to train.", Classifier.class, "trees.HoeffdingTree");
+	public ClassOption backgroundClassifierOption = new ClassOption("backgroundClassifier", 'b', "Classifier to train.", Classifier.class, "meta.OzaBoost");
 
 	public IntOption ensembleSizeOption = new IntOption("ensembleSize", 's', "The number of models to use in voting.", 10, 1, Integer.MAX_VALUE);
 	
@@ -31,7 +31,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 			"Uses recorded prediction patterns to weight decisions while predicting an unknown instance."
 			}, 0);
 
-	public IntOption windowSizeOption = new IntOption("windowSize", 'w', "The window size.", 100, 1, Integer.MAX_VALUE);
+	public IntOption windowSizeOption = new IntOption("windowSize", 'w', "The window size.", 1000, 1, Integer.MAX_VALUE);
 
 	// Shared variables
 	protected Classifier[] ensemble;
@@ -40,7 +40,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 
 	// PP variables
 	protected List<Object> patternArray;
-	// 1st list = row, 2nd list = column.
+	// 1st list = column (label), 2nd list = row (pattern).
 	protected List<List<Object>> matrix;
 
 	@Override
@@ -79,19 +79,28 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 					// If user defined ensemble size has been reach, classifiers are only replaced with new classifiers.
 					if (i / 2 > this.ensembleSizeOption.getValue()) {
 						// Both new classifiers.
-						this.ensemble[0] = null;
-						this.ensemble[1] = null;
+						this.ensemble[0] = (Classifier) getPreparedClassOption(this.activeClassifierOption);
+						this.ensemble[1] = (Classifier) getPreparedClassOption(this.backgroundClassifierOption);
 					}
 
 					// Otherwise the background becomes the active and a new background is chosen.
 					else {
 						this.ensemble[0] = this.ensemble[1];
-						this.ensemble[1] = null;
+						this.ensemble[1] = (Classifier) getPreparedClassOption(this.backgroundClassifierOption);
 					}
 				}
 
-				// Now do something with them ROFL!
+				// Both predictions are combined into a pattern to calculate the row.
+				ensemble[0].trainOnInstance(inst);
+				ensemble[1].trainOnInstance(inst);
+				// The correct label determines the column.
+				// Finally finding the correct position in the matrix to increment.
 
+				/*
+				The overall ensemble prediction is the label
+				that receives more votes based on the observed
+				patterns from all pairs of classifiers.
+				*/
 			}
 		}
 	}
