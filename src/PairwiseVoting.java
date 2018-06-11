@@ -19,7 +19,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 		return "Pairwise voting algorithm for data streams.";
 	}
 
-	public ClassOption baseLearnerOption = new ClassOption("baseLearner", 'a', "Classifier to train.", Classifier.class, "trees.OzaBoost");
+	public ClassOption baseLearnerOption = new ClassOption("baseLearner", 'a', "Classifier to train.", Classifier.class, "meta.OzaBoost");
 
 	public IntOption ensembleSizeOption = new IntOption("ensembleSize", 's', "The number of models to use in voting.", 10, 1, Integer.MAX_VALUE);
 	
@@ -62,17 +62,17 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 	@Override
 	public void trainOnInstanceImpl(Instance inst)
 	{
-		if (this.votingAlgorithmOption.getChosenIndex() == 0) {
+		if (this.votingAlgorithmOption.getChosenIndex() != 0) {
 			// PA stuff...
 		}
 
 		else {
 			// If user defined ensemble size has been reach, classifiers are only replaced with new classifiers.
-			if (ensemble.size() >= 10) {
+			if (ensemble.size() >= ensembleSizeOption.getValue() + 1) {
 				ensemble.set(oldestClassifier, (Classifier) getPreparedClassOption(this.baseLearnerOption));
 				ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
 
-				if (oldestClassifier == ensembleSizeOption.getValue() + 1) {
+				if (oldestClassifier >= ensembleSizeOption.getValue()) {
 					oldestClassifier = 1;
 				} else {
 					oldestClassifier++;
