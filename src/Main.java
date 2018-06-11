@@ -13,13 +13,14 @@ import moa.streams.generators.RandomTreeGenerator;
 public class Main {
 
     public static void main(String[] args) {
-        runExperiment(10000, true);
+        runExperiment(10000, true, 1);
     }
 
-    private static void runExperiment(int numInstances, boolean isTesting) {
+    private static void runExperiment(int numInstances, boolean isTesting, int algorithmIndex) {
 
         //Classifier classifierLearner = new OzaBoost();
         Classifier classifierLearner = new PairwiseVoting();
+        ((PairwiseVoting) classifierLearner).votingAlgorithmOption.setChosenIndex(algorithmIndex);
 
         RandomTreeGenerator randomTreeGeneratorStream = new RandomTreeGenerator();
         randomTreeGeneratorStream.prepareForUse();

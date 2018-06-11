@@ -62,7 +62,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 	@Override
 	public void trainOnInstanceImpl(Instance inst)
 	{
-		if (this.votingAlgorithmOption.getChosenIndex() != 0) {
+		if (this.votingAlgorithmOption.getChosenIndex() == 0) {
 			// PA stuff...
 		}
 
