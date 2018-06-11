@@ -1,3 +1,5 @@
+//package moa.classifiers.meta;
+
 import com.github.javacliparser.IntOption;
 import com.github.javacliparser.MultiChoiceOption;
 import com.yahoo.labs.samoa.instances.Instance;
@@ -33,6 +35,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 	// Shared variables
 	// ensemble[0] contains the backgroundClassifier
 	protected List<Classifier> ensemble;
+	protected int instanceCounter;
 
 	// PA variables
 
@@ -47,6 +50,8 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 	{
 		// Initialize shared variables.
 		this.ensemble = new ArrayList<>();
+		this.instanceCounter = 0;
+
 		this.oldestClassifier = 1;
 
 		if (this.votingAlgorithmOption.getChosenIndex() == 0) {
@@ -67,34 +72,42 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 		}
 
 		else {
-			// If user defined ensemble size has been reach, classifiers are only replaced with new classifiers.
-			if (ensemble.size() >= ensembleSizeOption.getValue() + 1) {
-				ensemble.set(oldestClassifier, (Classifier) getPreparedClassOption(this.baseLearnerOption));
-				ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
-
-				if (oldestClassifier >= ensembleSizeOption.getValue()) {
-					oldestClassifier = 1;
-				} else {
-					oldestClassifier++;
-				}
-			}
-
-			// Otherwise the background becomes the active and a new background is chosen.
-			else if (ensemble.size() != 0) {
-				ensemble.add(ensemble.get(0));
-				ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
-			}
-
-			else {
+			
+			if (instanceCounter == 0) {
 				// Background classifier.
 				this.ensemble.add((Classifier) getPreparedClassOption(this.baseLearnerOption));
 				// Active classifier.
 				this.ensemble.add((Classifier) getPreparedClassOption(this.baseLearnerOption));
 			}
 
+			else {
+
+				if (instanceCounter % 1000 == 0) {
+
+					// If user defined ensemble size has been reach, classifiers are only replaced with new classifiers.
+					if (ensemble.size() >= ensembleSizeOption.getValue() + 1) {
+						ensemble.set(oldestClassifier, (Classifier) getPreparedClassOption(this.baseLearnerOption));
+						ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
+
+						if (oldestClassifier >= ensembleSizeOption.getValue()) {
+							oldestClassifier = 1;
+						} else {
+							oldestClassifier++;
+						}
+					}
+
+					// Otherwise the background becomes the active and a new background is chosen.
+					else {
+						ensemble.add(ensemble.get(0));
+						ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
+					}
+				}
+			}
+
 			// Both predictions are combined into a pattern to calculate the row.
 			ensemble.get(0).trainOnInstance(inst);
 			ensemble.get(ensemble.size() - 1).trainOnInstance(inst);
+
 			// The correct label determines the column.
 			// Finally finding the correct position in the matrix to increment.
 
@@ -103,6 +116,8 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 			that receives more votes based on the observed
 			patterns from all pairs of classifiers.
 			*/
+
+			instanceCounter++;
 		}
 	}
 
