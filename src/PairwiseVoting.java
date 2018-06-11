@@ -72,7 +72,7 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 		}
 
 		else {
-			
+
 			if (instanceCounter == 0) {
 				// Background classifier.
 				this.ensemble.add((Classifier) getPreparedClassOption(this.baseLearnerOption));
@@ -85,11 +85,10 @@ public class PairwiseVoting extends AbstractClassifier implements MultiClassClas
 				if (instanceCounter % 1000 == 0) {
 
 					// If user defined ensemble size has been reach, classifiers are only replaced with new classifiers.
-					if (ensemble.size() >= ensembleSizeOption.getValue() + 1) {
+					if (ensemble.size() == ensembleSizeOption.getValue() + 1) {
 						ensemble.set(oldestClassifier, (Classifier) getPreparedClassOption(this.baseLearnerOption));
-						ensemble.set(0, (Classifier) getPreparedClassOption(this.baseLearnerOption));
 
-						if (oldestClassifier >= ensembleSizeOption.getValue()) {
+						if (oldestClassifier == ensemble.size() - 1) {
 							oldestClassifier = 1;
 						} else {
 							oldestClassifier++;

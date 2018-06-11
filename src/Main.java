@@ -13,7 +13,7 @@ import moa.streams.generators.RandomTreeGenerator;
 public class Main {
 
     public static void main(String[] args) {
-        runExperiment(10000, true, 1);
+        runExperiment(25000, true, 1);
     }
 
     private static void runExperiment(int numInstances, boolean isTesting, int algorithmIndex) {
