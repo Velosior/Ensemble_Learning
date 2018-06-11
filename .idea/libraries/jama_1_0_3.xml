@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="jama-1.0.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jama-1.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-cup-0.11a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/meka-1.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/moa-2017.06.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pentaho-package-manager-1.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/sizeofag-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/trove4j-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/weka-dev-3.7.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

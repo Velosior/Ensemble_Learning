@@ -23,11 +23,11 @@
 hs_err_pid*
 
 # IntelliJ IDEA resources
-.idea/
-Ensemble_Learning.iml
+#.idea/
+#Ensemble_Learning.iml
 
 # Library folder
-lib/
+#lib/
 
 # Output folder
-out/
+#out/
